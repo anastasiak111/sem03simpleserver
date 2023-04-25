@@ -6,6 +6,8 @@ import (
 	"net"
 	"sync"
 	"github.com/anastasiak111/is105sem03/mycrypt"
+	"github.com/anastasiak111/minyr/yr"
+	"strings"
 )
 
 func main() {
@@ -39,9 +41,19 @@ func main() {
 					}
 					dekryptertMelding := mycrypt.Krypter([]rune(string(buf[:n])), mycrypt.ALF_SEM03, len(mycrypt.ALF_SEM03)-4)
 					log.Println("Dekrypter melding: ", string(dekryptertMelding))
-					switch msg := string(dekryptertMelding); msg {
+					msg := string(dekryptertMelding);
+					msgCase := strings.Split(msg, ";")
+
+					switch msgCase[0] {
   				        case "ping":
-						_, err = c.Write([]byte("pong"))
+						kryptertMelding := mycrypt.Krypter([]rune("pong"), mycrypt.ALF_SEM03, 4)
+						log.Println("Kryptert melding: ", string(kryptertMelding))
+						_, err = c.Write([]byte(string(kryptertMelding)))
+					case "Kjevik":
+						convertTemp := yr.CelsiusToFarhenheit(msg)
+                                                kryptertMelding := mycrypt.Krypter([]rune(convertTemp), mycrypt.ALF_SEM03, 4)
+						log.Println("Kryptert melding: ", string(kryptertMelding))
+                                                _, err = c.Write([]byte(string(kryptertMelding)))
 					default:
 						_, err = c.Write(buf[:n])
 					}
@@ -57,3 +69,4 @@ func main() {
 	}()
 	wg.Wait()
 }
+
