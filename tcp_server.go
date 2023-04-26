@@ -50,7 +50,7 @@ func main() {
 						log.Println("Kryptert melding: ", string(kryptertMelding))
 						_, err = c.Write([]byte(string(kryptertMelding)))
 					case "Kjevik":
-						convertTemp := yr.CelsiusToFarhenheit(msg)
+						convertTemp := conv.CelsiusToFarhenheit(msg)
                                                 kryptertMelding := mycrypt.Krypter([]rune(convertTemp), mycrypt.ALF_SEM03, 4)
 						log.Println("Kryptert melding: ", string(kryptertMelding))
                                                 _, err = c.Write([]byte(string(kryptertMelding)))
